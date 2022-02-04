@@ -1,3 +1,4 @@
+
 from tkinter import *
 from calculs import calculs, Instruments
 
@@ -26,11 +27,17 @@ def appeler_calculs(valeur,range):
     global appareil_calcul, type_calcul
     range = str(range)
     valeur = str(valeur)
-    incertitude = calculs(appareil_calcul, type_calcul, range, valeur)
-    rep = Tk()
-    rep_text = Label(rep,font=('arial', 20), text=str(incertitude))
-    rep_text.pack(expand=True)
-    rep.mainloop()
+    try:
+        incertitude = calculs(appareil_calcul, type_calcul, range, valeur)
+        rep = Tk()
+        rep_text = Label(rep,font=('arial', 20), text=str(incertitude))
+        rep_text.pack(expand=True)
+        rep.mainloop()
+    except Exception:
+        rep = Tk()
+        rep_text = Label(rep,font=('arial', 20), text='Erreur')
+        rep_text.pack(expand=True)
+        rep.mainloop()
 
 appareil = Frame()
 appareil_text = Label(window,font=('arial', 20), text="Entrez l'appareil (4,5 ou 6,5)")
