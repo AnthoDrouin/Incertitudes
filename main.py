@@ -1,6 +1,7 @@
 
 from tkinter import *
 from calculs import calculs, Instruments
+from sigfig import round
 
 window = Tk()
 window.title('Incertitude')
@@ -38,6 +39,7 @@ def appeler_calculs(valeur,range):
         rep_text = Label(rep,font=('arial', 20), text='Erreur')
         rep_text.pack(expand=True)
         rep.mainloop()
+
 
 appareil = Frame()
 appareil_text = Label(window,font=('arial', 20), text="Entrez l'appareil (4,5 ou 6,5)")
