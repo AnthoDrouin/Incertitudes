@@ -30,6 +30,7 @@ def appeler_calculs(valeur,range):
     valeur = str(valeur)
     try:
         incertitude = calculs(appareil_calcul, type_calcul, range, valeur)
+        incertitude = round(incertitude, sigfigs = 2)
         rep = Tk()
         rep_text = Label(rep,font=('arial', 20), text=str(incertitude))
         rep_text.pack(expand=True)
