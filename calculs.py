@@ -18,3 +18,4 @@ def calculs(appareil, type, range, valeur):
     incertitude = float(valeur) * (float(range_mesure[1])/100) + float(range_mesure[0]) * (float(range_mesure[2])/100)
     return incertitude
 
+#Fonction accepte liste retourne fichier excel

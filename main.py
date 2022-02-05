@@ -1,81 +1,98 @@
 
 from tkinter import *
+
 from calculs import calculs, Instruments
 from sigfig import round
+class incertitudes:
 
-window = Tk()
-window.title('Incertitude')
-window.geometry('720x480')
+    def __init__(self):
 
-appareil_calcul = ''
-type_calcul = ''
-range_calcul = ''
+        self.appareil_calcul = ''
+        self.type_calcul = ''
+        self.range_calcul = ''
 
-def type_appareil(num):
-    global appareil_calcul
-    appareil_calcul = num
+        self.window = Tk()
+        self.window.title('Incertitude')
+        self.window.geometry('720x480')
+        self.appareil = Frame()
+        self.appareil_text = Label(self.window,font=('arial', 20),text="Entrez l'appareil (4,5 ou 6,5)")
+        self.appareil_text.pack(expand=True)
+        self.appareil1_button = Button(self.appareil, text='6,5' ,command= lambda : self.type_appareil('6,5'))
+        self.appareil1_button.pack(side=LEFT)
+        self.appareil2_button = Button(self.appareil, text='4,5',command= lambda : self.type_appareil('4,5'))
+        self.appareil2_button.pack(side=RIGHT)
+        self.appareil.pack(expand=True)
+        self.Type = Frame()
+        self.Type_text = Label(self.window,font=('arial', 20), text="Entrez le type de mesure ")
+        self.Type_text.pack(expand=True)
+        self.Type1_button = Button(self.Type, text='Tension',command= lambda : self.type_type('Tension'))
+        self.Type1_button.grid(row=0,column=0)
+        self.Type2_button = Button(self.Type, text='Résistance',command= lambda : self.type_type('Résistance'))
+        self.Type2_button.grid(row=0,column=1)
+        self.Type3_button = Button(self.Type, text='Courant',command= lambda : self.type_type('Courant'))
+        self.Type3_button.grid(row=0,column=2)
+        self.Type.pack(expand=True)
+        self.Range = Frame()
+        self.Range_text = Label(self.window,font=('arial', 20), text="Entrez le range de votre mesure")
+        self.Range_text.pack(expand=True)
+        self.Range_entry = Entry(self.Range, bd=0)
+        self.Range_entry.grid(row=0,column=0)
+        self.Range.pack(expand=True)
+        self.Valeur = Frame()
+        self.Valeur_text = Label(self.window,font=('arial', 20), text="Entrez votre mesure")
+        self.Valeur_text.pack(expand=True)
+        self.Valeur_entry = Entry(self.Valeur, bd=0)
+        self.Valeur_entry.grid(row=0,column=0)
+        self.Valeur.pack(expand=True)
+        self.Boutton = Frame()
+        self.Type4_button = Button(self.Boutton, text='Calculez',command= lambda : self.appeler_calculs(self.Valeur_entry.get(), self.Range_entry.get()))
+        self.Type4_button.grid(row=0,column=0)
+        self.Type5_button = Button(self.Boutton, text='Reset',command=self.reset)
+        self.Type5_button.grid(row=0,column=1)
+        self.Boutton.pack(expand=True)
+        self.window.mainloop()
 
-def type_type(type):
-    global type_calcul
-    type_calcul = type
 
-def reset():
-    global appareil_calcul, type_calcul
-    appareil_calcul = ''
-    type_calcul = ''
+    def type_appareil(self,num):
+        self.appareil_calcul = num
+        if num == '6,5':
+            self.appareil1_button.config(foreground="red")
+            self.appareil2_button.config(foreground="black")
+        elif num == '4,5':
+            self.appareil2_button.config(foreground="red")
+            self.appareil1_button.config(foreground="black")
 
-def appeler_calculs(valeur,range):
-    global appareil_calcul, type_calcul
-    range = str(range)
-    valeur = str(valeur)
-    try:
-        incertitude = calculs(appareil_calcul, type_calcul, range, valeur)
-        incertitude = round(incertitude, sigfigs = 2)
-        rep = Tk()
-        rep_text = Label(rep,font=('arial', 20), text=str(incertitude))
-        rep_text.pack(expand=True)
-        rep.mainloop()
-    except Exception:
-        rep = Tk()
-        rep_text = Label(rep,font=('arial', 20), text='Erreur')
-        rep_text.pack(expand=True)
-        rep.mainloop()
+    def type_type(self,type):
+        self.type_calcul = type
+        self.Type1_button.config(foreground="black")
+        self.Type2_button.config(foreground="black")
+        self.Type3_button.config(foreground="black")
+        if type == 'Tension':
+            self.Type1_button.config(foreground="red")
+        elif type == 'Courant':
+            self.Type3_button.config(foreground="red")
+        elif type == 'Résistance':
+            self.Type2_button.config(foreground="red")
+
+    def reset(self):
+        self.appareil_calcul = ''
+        self.type_calcul = ''
+
+    def appeler_calculs(self,valeur,range):
+        range = str(range)
+        valeur = str(valeur)
+        try:
+            incertitude = calculs(self.appareil_calcul, self.type_calcul, range, valeur)
+            incertitude = round(incertitude, sigfigs = 2)
+            rep = Tk()
+            rep_text = Label(rep,font=('arial', 20), text=str(incertitude))
+            rep_text.pack(expand=True)
+            rep.mainloop()
+        except Exception:
+            rep = Tk()
+            rep_text = Label(rep,font=('arial', 20), text='Erreur')
+            rep_text.pack(expand=True)
+            rep.mainloop()
 
 
-appareil = Frame()
-appareil_text = Label(window,font=('arial', 20), text="Entrez l'appareil (4,5 ou 6,5)")
-appareil_text.pack(expand=True)
-appareil1_button = Button(appareil, text='6,5',command= lambda : type_appareil('6,5'))
-appareil1_button.pack(side=LEFT)
-appareil2_button = Button(appareil, text='4,5',command= lambda : type_appareil('4,5'))
-appareil2_button.pack(side=RIGHT)
-appareil.pack(expand=True)
-Type = Frame()
-Type_text = Label(window,font=('arial', 20), text="Entrez le type de mesure ")
-Type_text.pack(expand=True)
-Type1_button = Button(Type, text='Tension',command= lambda : type_type('Tension'))
-Type1_button.grid(row=0,column=0)
-Type1_button = Button(Type, text='Résistance',command= lambda : type_type('Résistance'))
-Type1_button.grid(row=0,column=1)
-Type1_button = Button(Type, text='Courant',command= lambda : type_type('Courant'))
-Type1_button.grid(row=0,column=2)
-Type.pack(expand=True)
-Range = Frame()
-Range_text = Label(window,font=('arial', 20), text="Entrez le range de votre mesure")
-Range_text.pack(expand=True)
-Range_entry = Entry(Range, bd=0)
-Range_entry.grid(row=0,column=0)
-Range.pack(expand=True)
-Valeur = Frame()
-Valeur_text = Label(window,font=('arial', 20), text="Entrez votre mesure")
-Valeur_text.pack(expand=True)
-Valeur_entry = Entry(Valeur, bd=0)
-Valeur_entry.grid(row=0,column=0)
-Valeur.pack(expand=True)
-Boutton = Frame()
-Type1_button = Button(Boutton, text='Calculez',command= lambda : appeler_calculs(Valeur_entry.get(), Range_entry.get()))
-Type1_button.grid(row=0,column=0)
-Type1_button = Button(Boutton, text='Reset',command=reset)
-Type1_button.grid(row=0,column=1)
-Boutton.pack(expand=True)
-window.mainloop()
+display = incertitudes()
