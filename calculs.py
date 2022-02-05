@@ -1,3 +1,5 @@
+import pandas as pd
+
 
 Instruments = {'6,5' : {'Tension':{'100m': ['100','0.0050', '0.0035'], "1": ["1", "0.0040", "0.0007"], 
 "10": ["10", "0.0035", "0.0005"], "100": ["100", "0.0045", "0.0006"], "1000": ["1000", "0.0045", "0.0010"]},
@@ -18,4 +20,29 @@ def calculs(appareil, type, range, valeur):
     incertitude = float(valeur) * (float(range_mesure[1])/100) + float(range_mesure[0]) * (float(range_mesure[2])/100)
     return incertitude
 
-#Fonction accepte liste retourne fichier excel
+
+def calculs2excel(liste):
+    #liste = [[appareil1, type1, range1, valeur1], [appareil2, type2, range2, valeur2]...]
+    #Retourne excel nommé Output. Si le excel est déjà écrit, alors il fait tout simplement l'actualiser.
+    res = []
+    unit = {"Résistance": "\u03A9", "Tension": "V", "Courant": "A"}
+    for calcul in liste:
+        appareil = calcul[0]
+        type = calcul[1]
+        rangee = calcul[2]
+        valeur = calcul[3]
+        unite = unit.get(type)
+        if rangee[-1] in ["u", "k", "M", "m"]:
+            facteur_unit = rangee[-1]
+            unite = f"{facteur_unit}{unite}"
+        incertitude = calculs(appareil, type, rangee, valeur)
+        res.append([valeur, f"±{incertitude}", unite, "", rangee, appareil])
+    df = pd.DataFrame(res, columns=["valeur", "incertitude", "unité", "", "range", "appareil"])
+    df.to_excel("output.xlsx")  # Peut ajouter titre personalisé
+    return
+
+
+liste = [["6,5", "Tension", "100m", "76"], ["6,5", "Tension", "1", "0.98"], ["4,5", "Résistance", "5k", "3456"]]
+#Pour tester
+
+calculs2excel(liste)
