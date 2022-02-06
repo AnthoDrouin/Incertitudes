@@ -1,5 +1,6 @@
 
 from tkinter import *
+from turtle import right
 from calculs import calculs, Instruments
 from sigfig import round
 class incertitudes:
@@ -49,6 +50,7 @@ class incertitudes:
         self.Type5_button = Button(self.Boutton, text='Reset',command=self.reset)
         self.Type5_button.grid(row=0,column=1)
         self.Boutton.pack(expand=True)
+    
 
         self.window.mainloop()
         
