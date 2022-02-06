@@ -46,11 +46,11 @@ class incertitudes_de_masses:
         self.Valeur_entry.grid(row=0,column=0)
         self.Valeur.pack(expand=True)
         self.Boutton = Frame(self.info)
-        self.Type4_button = Button(self.Boutton, text='Calculez',command= lambda : self.appeler_calculs())
+        self.Type4_button = Button(self.Boutton, text='Calculez',command= lambda : self.prénom())
         self.Type4_button.grid(row=0,column=0)
-        self.Type5_button = Button(self.Boutton, text='Reset',command=self.reset())
+        self.Type5_button = Button(self.Boutton, text='Reset',command= lambda : self.reset())
         self.Type5_button.grid(row=0,column=1)
-        self.Type6_button = Button(self.Boutton, text='Ajouter',command=self.ajout(self.Valeur_entry.get(), self.Range_entry.get()))
+        self.Type6_button = Button(self.Boutton, text='Ajouter',command= lambda : self.ajout(self.Valeur_entry.get(), self.Range_entry.get()))
         self.Type6_button.grid(row=0,column=2)
         self.Boutton.pack(expand=True)
         self.info.pack(expand=True)
@@ -84,14 +84,29 @@ class incertitudes_de_masses:
     def ajout(self,valeur,range):
         self.liste.append([self.appareil_calcul, self.type_calcul, range, valeur])
 
-    def appeler_calculs(self):
-        self.nom = ''
-        Nom = Name()
-        nom = Nom.Name
-        while nom == '':
-            nom = Nom.Name
+    def prénom(self):
+
+        def name(nom):
+            Nom.destroy()
+            self.appeler_calculs(nom)
+
+        Nom = Tk()
+        Nom.geometry('720x480')
+        Nom_label = Label(Nom,font=('arial', 20), text="Veuillez entrez le nom de votre fichier")
+        Nom_label.pack(expand=True)
+        Nom_entry = Entry(Nom, bd=0)
+        Nom_entry.pack(expand=True)
+        Nom_button = Button(Nom, text='Choisir',command= lambda : name(Nom_entry.get()))
+        Nom_button.pack(expand=True)
+        Nom.mainloop()
+
+    def appeler_calculs(self, nom):
         try:
-            calculs2excel(self.liste, self.nom)
+            calculs2excel(self.liste, nom)
+            rep = Tk()
+            rep_text = Label(rep,font=('arial', 20), text='Réussi')
+            rep_text.pack(expand=True)
+            rep.mainloop()
         except Exception:
             rep = Tk()
             rep_text = Label(rep,font=('arial', 20), text='Erreur')
@@ -108,7 +123,7 @@ class Name:
         self.Nom_label.pack(expand=True)
         self.Nom_entry = Entry(self.Nom, bd=0)
         self.Nom_entry.pack(expand=True)
-        self.Nom_button = Button(self.Nom, text='Choisir',command=self.name(self.Nom_entry.get()))
+        self.Nom_button = Button(self.Nom, text='Choisir',command= lambda : self.name(self.Nom_entry.get()))
         self.Nom_button.pack(expand=True)
         self.Nom.mainloop()
 

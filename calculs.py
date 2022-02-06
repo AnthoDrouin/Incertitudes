@@ -21,7 +21,7 @@ def calculs(appareil, type, range, valeur):
     return incertitude
 
 
-def calculs2excel(liste):
+def calculs2excel(liste,name):
     #liste = [[appareil1, type1, range1, valeur1], [appareil2, type2, range2, valeur2]...]
     #Retourne excel nommé Output. Si le excel est déjà écrit, alors il fait tout simplement l'actualiser.
     res = []
@@ -38,11 +38,11 @@ def calculs2excel(liste):
         incertitude = calculs(appareil, type, rangee, valeur)
         res.append([valeur, f"±{incertitude}", unite, "", rangee, appareil])
     df = pd.DataFrame(res, columns=["valeur", "incertitude", "unité", "", "range", "appareil"])
-    df.to_excel("output.xlsx")  # Peut ajouter titre personalisé
+    df.to_excel(f"{name}.xlsx")  # Peut ajouter titre personalisé
     return
 
 
-liste = [["6,5", "Tension", "100m", "76"], ["6,5", "Tension", "1", "0.98"], ["4,5", "Résistance", "5k", "3456"]]
+#liste = [["6,5", "Tension", "100m", "76"], ["6,5", "Tension", "1", "0.98"], ["4,5", "Résistance", "5k", "3456"]]
 #Pour tester
 
-calculs2excel(liste)
+#calculs2excel(liste)
