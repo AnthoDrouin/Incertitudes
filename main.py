@@ -2,6 +2,7 @@ from tkinter import *
 import calculs_de_masse
 import calculs_simples
 import calculs
+import calculs_intelligent
 
 class intro:
     def __init__(self):
@@ -17,7 +18,7 @@ class intro:
         self.bouton_1.grid(row=0, column=0)
         self.bouton_2 = Button(self.incertitude, text='Calculs de masse' ,command= self.appel_mass)
         self.bouton_2.grid(row=0, column=1)
-        self.bouton_3 = Button(self.incertitude, text='Calculs intelligent')
+        self.bouton_3 = Button(self.incertitude, text='Calculs intelligent', command = self.appel_intelligent)
         self.bouton_3.grid(row=0, column=2)
         self.incertitude.pack(expand=True)
         self.incertitude_text = Label(self.intro,font=('arial', 20),text="Section graphiques")
@@ -31,5 +32,9 @@ class intro:
     def appel_simple(self):
         self.intro.destroy()
         calculs_simples.incertitudes()
+
+    def appel_intelligent(self):
+        self.intro.destroy()
+        calculs_intelligent.Incertitude_intelligente()
 
 a = intro()
