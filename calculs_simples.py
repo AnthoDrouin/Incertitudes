@@ -102,5 +102,3 @@ class incertitudes:
             rep_text = Label(rep,font=('arial', 20), text='Erreur')
             rep_text.pack(expand=True)
             rep.mainloop()
-
-a = incertitudes()

@@ -158,4 +158,3 @@ class Name:
     def kill(self):
         self.Nom.destroy()
         
-a = incertitudes_de_masses()
