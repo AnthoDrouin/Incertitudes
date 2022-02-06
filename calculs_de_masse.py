@@ -55,7 +55,18 @@ class incertitudes_de_masses:
         self.Type6_button.grid(row=0,column=2)
         self.window.bind('<Return>', incertitudes_de_masses.prénom)
         self.Boutton.pack(expand=True)
-        self.info.pack(expand=True)
+        self.info.pack(side=LEFT, padx=25)
+
+        self.information = Frame()
+        self.info_text = Frame(self.information)
+        self.info_label = Label(self.info_text,font=('arial', 20), text="Voici les mesures saisies")
+        self.info_label.pack()
+        self.info_text.pack()
+        self.info_liste = Frame(self.information)
+        self.info_liste.pack()
+        self.information.pack(side=RIGHT, padx=50)
+        
+
         self.window.mainloop()
 
     def type_appareil(self,num):
@@ -83,9 +94,19 @@ class incertitudes_de_masses:
         self.appareil_calcul = ''
         self.type_calcul = ''
         self.liste = []
+        self.Type1_button.config(foreground="black")
+        self.Type2_button.config(foreground="black")
+        self.Type3_button.config(foreground="black")
+        self.appareil2_button.config(foreground="black")
+        self.appareil1_button.config(foreground="black")
+        self.info_liste.destroy()
 
     def ajout(self,valeur,range):
-        self.liste.append([self.appareil_calcul, self.type_calcul, range, valeur])
+        a = [self.appareil_calcul, self.type_calcul, range, valeur]
+        b = str(a)
+        self.liste.append(a)
+        self.valeur_liste = Label(self.info_liste,font=('arial', 20), text=b)
+        self.valeur_liste.pack()
 
     def prénom(self):
 
