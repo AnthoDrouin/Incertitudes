@@ -2,6 +2,7 @@
 from tkinter import *
 from calculs import calculs2excel, Instruments
 
+
 class incertitudes_de_masses:
 
     def __init__(self):
@@ -52,6 +53,7 @@ class incertitudes_de_masses:
         self.Type5_button.grid(row=0,column=1)
         self.Type6_button = Button(self.Boutton, text='Ajouter',command= lambda : self.ajout(self.Valeur_entry.get(), self.Range_entry.get()))
         self.Type6_button.grid(row=0,column=2)
+        self.window.bind('<Return>', incertitudes_de_masses.prénom)
         self.Boutton.pack(expand=True)
         self.info.pack(expand=True)
         self.window.mainloop()
@@ -80,6 +82,7 @@ class incertitudes_de_masses:
     def reset(self):
         self.appareil_calcul = ''
         self.type_calcul = ''
+        self.liste = []
 
     def ajout(self,valeur,range):
         self.liste.append([self.appareil_calcul, self.type_calcul, range, valeur])

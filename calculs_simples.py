@@ -49,7 +49,9 @@ class incertitudes:
         self.Type5_button = Button(self.Boutton, text='Reset',command=self.reset)
         self.Type5_button.grid(row=0,column=1)
         self.Boutton.pack(expand=True)
+
         self.window.mainloop()
+        
 
 
     def type_appareil(self,num):
@@ -76,6 +78,12 @@ class incertitudes:
     def reset(self):
         self.appareil_calcul = ''
         self.type_calcul = ''
+        self.Type1_button.config(foreground="black")
+        self.Type2_button.config(foreground="black")
+        self.Type3_button.config(foreground="black")
+        self.appareil2_button.config(foreground="black")
+        self.appareil1_button.config(foreground="black")
+        
 
     def appeler_calculs(self,valeur,range):
         range = str(range)
@@ -92,3 +100,5 @@ class incertitudes:
             rep_text = Label(rep,font=('arial', 20), text='Erreur')
             rep_text.pack(expand=True)
             rep.mainloop()
+
+a = incertitudes()
