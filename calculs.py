@@ -21,7 +21,7 @@ def calculs(appareil, type, range, valeur):
     return incertitude
 
 
-def calculs2excel(liste,name):
+def calculs2excel(liste, name):
     #liste = [[appareil1, type1, range1, valeur1], [appareil2, type2, range2, valeur2]...]
     #Retourne excel nommé Output. Si le excel est déjà écrit, alors il fait tout simplement l'actualiser.
     res = []
@@ -42,7 +42,19 @@ def calculs2excel(liste,name):
     return
 
 
-#liste = [["6,5", "Tension", "100m", "76"], ["6,5", "Tension", "1", "0.98"], ["4,5", "Résistance", "5k", "3456"]]
-#Pour tester
-
-#calculs2excel(liste)
+def calculs2tk(liste):
+    res = []
+    unit = {"Résistance": "\u03A9", "Tension": "V", "Courant": "A"}
+    for calcul in liste:
+        appareil = calcul[0]
+        type = calcul[1]
+        rangee = calcul[2]
+        valeur = calcul[3]
+        unite = unit.get(type)
+        if rangee[-1] in ["u", "k", "M", "m"]:
+            facteur_unit = rangee[-1]
+            unite = f"{facteur_unit}{unite}"
+        incertitude = calculs(appareil, type, rangee, valeur)
+        affiche = f"{valeur}±{incertitude} {unite}"
+        res.append(affiche)
+    return res
