@@ -58,3 +58,5 @@ def calculs2tk(liste):
         affiche = f"{valeur}±{incertitude} {unite}"
         res.append(affiche)
     return res
+
+liste = [["6,5", "Tension", "100m", "88"]]
