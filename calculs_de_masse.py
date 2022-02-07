@@ -1,6 +1,6 @@
 
 from tkinter import *
-from calculs import calculs2excel, Instruments
+from calculs import calculs2excel, Instruments, calculs2tk
 
 
 class incertitudes_de_masses:
@@ -105,7 +105,8 @@ class incertitudes_de_masses:
         a = [self.appareil_calcul, self.type_calcul, range, valeur]
         b = str(a)
         self.liste.append(a)
-        self.valeur_liste = Label(self.info_liste,font=('arial', 20), text=b)
+        c = calculs2tk([a])
+        self.valeur_liste = Label(self.info_liste,font=('arial', 20), text=c)
         self.valeur_liste.pack()
 
     def prénom(self):

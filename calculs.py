@@ -54,7 +54,7 @@ def calculs2tk(liste):
         if rangee[-1] in ["u", "k", "M", "m"]:
             facteur_unit = rangee[-1]
             unite = f"{facteur_unit}{unite}"
-        incertitude = calculs(appareil, type, rangee, valeur)
+        incertitude = round(calculs(appareil, type, rangee, valeur),sigfigs=2)
         affiche = f"{valeur}±{incertitude} {unite}"
         res.append(affiche)
     return res
