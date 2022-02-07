@@ -157,4 +157,3 @@ class Name:
 
     def kill(self):
         self.Nom.destroy()
-        

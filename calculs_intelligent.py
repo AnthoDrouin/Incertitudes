@@ -61,5 +61,3 @@ class Incertitude_intelligente:
         self.appareil_calcul = ''
         self.appareil2_button.config(foreground="black")
         self.appareil1_button.config(foreground="black")
-
-
