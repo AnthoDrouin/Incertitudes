@@ -54,7 +54,7 @@ class Incertitude_intelligente:
             rep_text = Label(rep,font=('arial', 20), text='Erreur')
             rep_text.pack(expand=True)
             rep.mainloop()
-        self.réponse_text.config(text=f"Votre incertitude est : {a[0]}")
+        self.réponse_text.config(text=f"Votre réponse est : {a[0]}")
         self.range_text.config(text=f"Le range déterminé est : {a[1]}")
 
     def reset(self):

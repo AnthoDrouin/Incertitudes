@@ -1,4 +1,4 @@
-from calculs import calculs
+from calculs import calculs, calculs2tk
 import pandas as pd
 from sklearn import tree
 
@@ -36,7 +36,7 @@ def calcul_intelligent(stri,appareil):
     c = a[0]
     appareil = str(appareil)
     app_cal = appareil.replace('.',',')
-    b = calculs(app_cal, type, c, valeure)
-    return (b, c)
+    b = calculs2tk([[app_cal, type, c, valeure]])
+    return (b[0], c)
     
 
