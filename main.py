@@ -38,3 +38,5 @@ class intro:
         calculs_intelligent.Incertitude_intelligente()
 
 a = intro()
+
+#ca fonctionne !
