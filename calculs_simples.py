@@ -18,9 +18,11 @@ class incertitudes:
         self.appareil_text = Label(self.window,font=('arial', 20),text="Entrez l'appareil (4,5 ou 6,5)")
         self.appareil_text.pack(expand=True)
         self.appareil1_button = Button(self.appareil, text='6,5' ,command= lambda : self.type_appareil('6,5'))
-        self.appareil1_button.pack(side=LEFT)
+        self.appareil1_button.grid(row=0, column=0)
         self.appareil2_button = Button(self.appareil, text='4,5',command= lambda : self.type_appareil('4,5'))
-        self.appareil2_button.pack(side=RIGHT)
+        self.appareil2_button.grid(row=0, column=1)
+        self.appareil3_button = Button(self.appareil, text='Source',command= lambda : self.type_appareil('Source'))
+        self.appareil3_button.grid(row=0, column=2)
         self.appareil.pack(expand=True)
         self.Type = Frame()
         self.Type_text = Label(self.window,font=('arial', 20), text="Entrez le type de mesure ")
@@ -59,11 +61,18 @@ class incertitudes:
     def type_appareil(self,num):
         self.appareil_calcul = num
         if num == '6,5':
-            self.appareil1_button.config(foreground="red")
             self.appareil2_button.config(foreground="black")
+            self.appareil1_button.config(foreground="red")
+            self.appareil3_button.config(foreground="black")
         elif num == '4,5':
             self.appareil2_button.config(foreground="red")
             self.appareil1_button.config(foreground="black")
+            self.appareil3_button.config(foreground="black")
+        elif num == 'Source':
+            self.appareil2_button.config(foreground="black")
+            self.appareil1_button.config(foreground="black")
+            self.appareil3_button.config(foreground="red")
+
 
     def type_type(self,type):
         self.type_calcul = type
@@ -85,6 +94,7 @@ class incertitudes:
         self.Type3_button.config(foreground="black")
         self.appareil2_button.config(foreground="black")
         self.appareil1_button.config(foreground="black")
+        self.appareil3_button.config(foreground="black")
         
 
     def appeler_calculs(self,valeur,range):
