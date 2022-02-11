@@ -38,5 +38,21 @@ def calcul_intelligent(stri,appareil):
     app_cal = appareil.replace('.',',')
     b = calculs2tk([[app_cal, type, c, valeure]])
     return (b[0], c)
-    
 
+
+def excel2excel(path, name, colonne_value, unite, appareil):
+    données = pd.read_excel(path, sheet_name=name)
+    valeurs = str(données[colonne_value])
+    unité = [unite for _ in range(len(valeurs))]
+    combi = tuple(zip(valeurs, unité))
+    stris = []
+    for tup in combi:
+        stris.append(tup[0] + tup[1])
+    res = []
+    for stri in stris:
+        incertitude = calcul_intelligent(stri, appareil)
+        num = stri[:-len(unite)]
+        res.append([num, f"{incertitude}", unite, "", appareil])
+    
+    df = pd.DataFrame(res, columns=["valeurs", "incertitude", "unité", "", "appareil"])
+    df.to_excel(f"{name}_output.xlsx")
