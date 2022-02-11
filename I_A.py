@@ -2,7 +2,7 @@ from calculs import calculs, calculs2tk
 import pandas as pd
 from sklearn import tree
 
-sufixe = {'mv': 1 , 'v' : 2, 'o' : 3, 'ko' : 4, 'Mo' : 5, 'ma' : 6, 'a' : 7, 'ua' : 8}
+sufixe = {'mv': 1 , 'v' : 2, 'o' : 3, 'ko' : 4, 'Mo' : 5, 'ua' : 6,  'ma' : 7, 'a' : 8, }
 
 incertitudes_data = pd.read_excel('incertitudes.xlsx')
 info_incertitude = incertitudes_data.drop(columns=['range'])
@@ -33,11 +33,20 @@ def calcul_intelligent(stri,appareil):
     sufixes_numero = sufixe[sufixes]
     valeure = float(stri[:-nb])
     a = model.predict([[sufixes_numero,valeure,float(appareil)]])
+    if a == 'err_d':
+        valeure = valeure/1000
+        n_suffixe = sufixes_numero + 1
+        a = model.predict([[n_suffixe,valeure,float(appareil)]])
+    elif a == 'err_m':
+        valeure = valeure*1000
+        n_suffixe = sufixes_numero - 1
+        a = model.predict([[n_suffixe,valeure,float(appareil)]])
     c = a[0]
     appareil = str(appareil)
     app_cal = appareil.replace('.',',')
     b = calculs2tk([[app_cal, type, c, valeure]])
     return (b[0], c)
+
 
 
 def excel2excel(path, name, colonne_value, unite, appareil):
