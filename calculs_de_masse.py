@@ -1,6 +1,10 @@
 
-from tkinter import *
+from distutils import command
+from tkinter import BOTH, ttk, Frame, Button, Label, Entry, Tk, StringVar, mainloop, LEFT, RIGHT
+from I_A import calcul_intelligent, excel2excel
+from matplotlib.pyplot import close, text
 from calculs import calculs2excel, Instruments, calculs2tk
+import tkinterDnD 
 
 
 class incertitudes_de_masses:
@@ -14,6 +18,8 @@ class incertitudes_de_masses:
         self.window = Tk()
         self.window.title('Incertitude')
         self.window.geometry('720x480')
+        self.excel = ''
+        self.exporter = 'méthode_1'
 
         self.info = Frame()
         self.appareil = Frame(self.info)
@@ -48,16 +54,21 @@ class incertitudes_de_masses:
         self.Valeur_entry = Entry(self.Valeur, bd=0)
         self.Valeur_entry.grid(row=0,column=0)
         self.Valeur.pack(expand=True)
-        self.Boutton = Frame(self.info)
-        self.Type4_button = Button(self.Boutton, text='Calculez',command= lambda : self.prénom())
-        self.Type4_button.grid(row=0,column=0)
-        self.Type5_button = Button(self.Boutton, text='Reset',command= lambda : self.reset())
-        self.Type5_button.grid(row=0,column=1)
-        self.Type6_button = Button(self.Boutton, text='Ajouter',command= lambda : self.ajout(self.Valeur_entry.get(), self.Range_entry.get()))
-        self.Type6_button.grid(row=0,column=2)
-        self.window.bind('<Return>', incertitudes_de_masses.prénom)
+        self.Boutton= Frame(self.info)
+        self.Boutton1 = Frame(self.Boutton)
+        self.Boutton2 = Frame(self.Boutton)
+        self.Type4_button = Button(self.Boutton2, text='Exporter',command= lambda : self.prénom())
+        self.Type4_button.pack(side=LEFT, fill="both")
+        self.Type5_button = Button(self.Boutton1, text='   Reset   ',command= lambda : self.reset())
+        self.Type5_button.pack(side=RIGHT, fill="both")
+        self.Type6_button = Button(self.Boutton1, text='Calculer',command= lambda : self.ajout(self.Valeur_entry.get(), self.Range_entry.get()))
+        self.Type6_button.pack(side=LEFT, fill="both")
+        self.Type7_button = Button(self.Boutton2, text='Importer',command= lambda : self.importer())
+        self.Type7_button.pack(side=RIGHT, fill="both")
+        self.Boutton1.pack(expand=True,fill="both")
+        self.Boutton2.pack(expand=True,fill="both")
         self.Boutton.pack(expand=True)
-        self.info.pack(side=LEFT, padx=25)
+        self.info.pack(side=LEFT, expand=True)
 
         self.information = Frame()
         self.info_text = Frame(self.information)
@@ -66,7 +77,7 @@ class incertitudes_de_masses:
         self.info_text.pack()
         self.info_liste = Frame(self.information)
         self.info_liste.pack()
-        self.information.pack(side=RIGHT, padx=50)
+        self.information.pack(side=RIGHT, expand=True)
         
 
         self.window.mainloop()
@@ -135,35 +146,52 @@ class incertitudes_de_masses:
         Nom.mainloop()
 
     def appeler_calculs(self, nom):
-        try:
-            calculs2excel(self.liste, nom)
-            rep = Tk()
-            rep_text = Label(rep,font=('arial', 20), text='Réussi')
-            rep_text.pack(expand=True)
-            rep.mainloop()
-        except Exception:
-            rep = Tk()
-            rep_text = Label(rep,font=('arial', 20), text='Erreur')
-            rep_text.pack(expand=True)
-            rep.mainloop()
+        if self.exporter == "méthode_1":
+            try:
+                calculs2excel(self.liste, nom)
+                rep = Tk()
+                rep_text = Label(rep,font=('arial', 20), text='Réussi')
+                rep_text.pack(expand=True)
+                rep.mainloop()
+            except Exception:
+                rep = Tk()
+                rep_text = Label(rep,font=('arial', 20), text='Erreur')
+                rep_text.pack(expand=True)
+                rep.mainloop()
+        elif self.exporter == "méthode_2":
+            try:
+                print([self.excel, nom, self.Range_entry.get(),self.appareil_calcul])
+                appareil = self.appareil_calcul.replace(',','.')
+                excel2excel(self.excel, nom, self.Range_entry.get(),appareil)
+                rep = Tk()
+                rep_text = Label(rep,font=('arial', 20), text='Réussi')
+                rep_text.pack(expand=True)
+                rep.mainloop()
+            except Exception:
+                rep = Tk()
+                rep_text = Label(rep,font=('arial', 20), text='Erreur')
+                rep_text.pack(expand=True)
+                rep.mainloop()
 
-class Name:
+    def importer(self):
+        root = tkinterDnD.Tk()  
+        root.title("tkinterDnD example")
+        excel = ''
+        self.exporter = 'méthode_2'
 
-    def __init__(self):
-        self.Name = ''
-        self.Nom = Tk()
-        self.Nom.geometry('720x480')
-        self.Nom_label = Label(self.Nom,font=('arial', 20), text="Veuillez entrez le nom de votre fichier")
-        self.Nom_label.pack(expand=True)
-        self.Nom_entry = Entry(self.Nom, bd=0)
-        self.Nom_entry.pack(expand=True)
-        self.Nom_button = Button(self.Nom, text='Choisir',command= lambda : self.name(self.Nom_entry.get()))
-        self.Nom_button.pack(expand=True)
-        self.Nom.mainloop()
+        def drop(event):
+            global excel
+            label_2.config(text=event.data)
+            excel = event.data
 
-    def name(self,name):
-        self.Name = name
-        self.kill()
+        def close():
+            global excel
+            self.excel = excel
+            root.destroy()
 
-    def kill(self):
-        self.Nom.destroy()
+        label_2 = ttk.Label(root, ondrop=drop, text= 'Glisser le fichier ici!', padding=50, relief="solid")
+        label_2.pack(fill="both", expand=True, padx=10, pady=10)
+        boutton = Button(root, text='choisir', command= lambda : close())
+        boutton.pack(fill="both",expand=True)
+
+        root.mainloop()
