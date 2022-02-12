@@ -84,4 +84,4 @@ def excel2excel(path, name, unite, appareil):
     df.to_excel(f"{name}_output.xlsx")
 
 
-print(excel2excel('/Users/laurentemond/Desktop/Classeur2.xlsx', 'se', 'a', '6.5'))
+#print(excel2excel('/Users/laurentemond/Desktop/Classeur2.xlsx', 'se', 'a', '6.5'))
