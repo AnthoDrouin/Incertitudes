@@ -10,6 +10,12 @@ range_incertitude = incertitudes_data['range']
 model = tree.DecisionTreeClassifier()
 model.fit(info_incertitude.values,range_incertitude.values)
 
+ajustement_data = pd.read_excel('ajustement.xlsx')
+ajustement_incertitude = ajustement_data.drop(columns=['range'])
+ajustement_range_incertitude = ajustement_data['range']
+model2 = tree.DecisionTreeClassifier()
+model2.fit(ajustement_incertitude.values,ajustement_range_incertitude.values)
+
 def calcul_intelligent(stri,appareil):
     nb = 0
     type = ''
@@ -35,20 +41,21 @@ def calcul_intelligent(stri,appareil):
     sufixes = stri[-nb:]
     sufixes_numero = sufixe[sufixes]
     valeure = float(stri[:-nb])
-    a = model.predict([[sufixes_numero,valeure,float(appareil)]])
+    a = model2.predict([[float(appareil),sufixes_numero,valeure]])
+    print(a)
 
     if a[0] == 'err_d':
         valeure = valeure/1000
         n_suffixe = sufixes_numero + 1
-        b = model.predict([[n_suffixe,valeure,float(appareil)]])
+        b = model.predict([[float(appareil),n_suffixe,valeure]])
     elif a[0] == 'err_m':
         valeure = valeure*1000
         n_suffixe = sufixes_numero - 1
         print([[n_suffixe,valeure,float(appareil)]])
-        b = model.predict([[n_suffixe,valeure,float(appareil)]])
+        b = model.predict([[float(appareil),n_suffixe,valeure]])
         print(b)
     else:
-        b = a
+        b = model.predict([[float(appareil),sufixes_numero,valeure]])
 
     c = b[0]
     appareil = str(appareil)
@@ -77,4 +84,4 @@ def excel2excel(path, name, unite, appareil):
     df.to_excel(f"{name}_output.xlsx")
 
 
-#print(excel2excel('/Users/laurentemond/Desktop/Classeur2.xlsx', 'se', 'a', '6.5'))
+print(excel2excel('/Users/laurentemond/Desktop/Classeur2.xlsx', 'se', 'a', '6.5'))
