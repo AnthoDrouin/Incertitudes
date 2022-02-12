@@ -14,7 +14,7 @@ class intro:
         self.appareil_text.pack(expand=True)
         self.incertitude_text = Label(self.intro,font=('arial', 20),text="Section incertitudes")
         self.incertitude_text.pack(expand=True)
-        self.bouton_1 = Button(self.incertitude, text='Calculs simple' ,command= self.appel_simple)
+        self.bouton_1 = Button(self.incertitude, text='Calculs simple')
         self.bouton_1.grid(row=0, column=0)
         self.bouton_2 = Button(self.incertitude, text='Calculs de masse' ,command= self.appel_mass)
         self.bouton_2.grid(row=0, column=1)

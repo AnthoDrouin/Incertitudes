@@ -13,15 +13,15 @@ model.fit(info_incertitude.values,range_incertitude.values)
 def calcul_intelligent(stri,appareil):
     nb = 0
     type = ''
-    for i in stri:
+    for i in stri[::-1]:
         try:
             int(i)
+            break
         except Exception:
             if i == '.':
                 pass
             else:
                 nb += 1
-
     if stri[-1:] == 'a':
         type = 'Courant'
     elif stri[-1:] == 'o':
@@ -29,39 +29,52 @@ def calcul_intelligent(stri,appareil):
     elif stri[-1:] == 'v':
         type = 'Tension'
 
+    if stri[0] == '-':
+        stri = stri[1:]
+
     sufixes = stri[-nb:]
     sufixes_numero = sufixe[sufixes]
     valeure = float(stri[:-nb])
     a = model.predict([[sufixes_numero,valeure,float(appareil)]])
-    if a == 'err_d':
+
+    if a[0] == 'err_d':
         valeure = valeure/1000
         n_suffixe = sufixes_numero + 1
-        a = model.predict([[n_suffixe,valeure,float(appareil)]])
-    elif a == 'err_m':
+        b = model.predict([[n_suffixe,valeure,float(appareil)]])
+    elif a[0] == 'err_m':
         valeure = valeure*1000
         n_suffixe = sufixes_numero - 1
-        a = model.predict([[n_suffixe,valeure,float(appareil)]])
-    c = a[0]
+        print([[n_suffixe,valeure,float(appareil)]])
+        b = model.predict([[n_suffixe,valeure,float(appareil)]])
+        print(b)
+    else:
+        b = a
+
+    c = b[0]
     appareil = str(appareil)
     app_cal = appareil.replace('.',',')
-    b = calculs2tk([[app_cal, type, c, valeure]])
-    return (b[0], c)
+    d = calculs2tk([[app_cal, type, c, valeure]])
+    return (d[0], c)
 
 
 
-def excel2excel(path, name, colonne_value, unite, appareil):
-    données = pd.read_excel(path, sheet_name=name)
-    valeurs = str(données[colonne_value])
+def excel2excel(path, name, unite, appareil):
+    données = pd.read_excel(path)
+    valeurs = données['value']
     unité = [unite for _ in range(len(valeurs))]
     combi = tuple(zip(valeurs, unité))
     stris = []
     for tup in combi:
-        stris.append(tup[0] + tup[1])
+        stris.append(str(tup[0]) + str(tup[1]))
     res = []
     for stri in stris:
+        stri = str(float(stri[:-len(unite)])) + stri[-len(unite):]
         incertitude = calcul_intelligent(stri, appareil)
         num = stri[:-len(unite)]
         res.append([num, f"{incertitude}", unite, "", appareil])
     
     df = pd.DataFrame(res, columns=["valeurs", "incertitude", "unité", "", "appareil"])
     df.to_excel(f"{name}_output.xlsx")
+
+
+#print(excel2excel('/Users/laurentemond/Desktop/Classeur2.xlsx', 'se', 'a', '6.5'))
