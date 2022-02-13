@@ -76,12 +76,26 @@ def excel2excel(path, name, unite, appareil):
     res = []
     for stri in stris:
         stri = str(float(stri[:-len(unite)])) + stri[-len(unite):]
-        incertitude = calcul_intelligent(stri, appareil)
-        num = stri[:-len(unite)]
-        res.append([num, f"{incertitude}", unite, "", appareil])
-    
-    df = pd.DataFrame(res, columns=["valeurs", "incertitude", "unité", "", "appareil"])
-    df.to_excel(f"{name}_output.xlsx")
+        affichage = str(calcul_intelligent(stri, appareil))
+        indice1 = affichage.index("±")
+        indice2 = affichage.index(" ")
+        print(indice1, indice2)
+        incertitude = affichage[indice1 + 1: indice2]
+        num = affichage[2: indice1]
+        unite_range = affichage[indice2 + 1:]
+        unite_range = unite_range[:-2]
+        res.append([num, incertitude, unite_range, "", appareil])
+
+    a = 0
+    for i, j in enumerate(path):
+        if j == "/":
+            a = i
+
+    final_path = path[:(a + 1)]
+    print(final_path)
+
+    df = pd.DataFrame(res, columns=["valeurs", "incertitude", "unité/range", "", "appareil"])
+    df.to_excel(final_path + f"{name}_output.xlsx")
 
 
 #print(excel2excel('/Users/laurentemond/Desktop/Classeur2.xlsx', 'se', 'a', '6.5'))
