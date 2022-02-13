@@ -42,7 +42,7 @@ def calcul_intelligent(stri,appareil):
     sufixes_numero = sufixe[sufixes]
     valeure = float(stri[:-nb])
     a = model2.predict([[float(appareil),sufixes_numero,valeure]])
-    print(a)
+    
 
     if a[0] == 'err_d':
         valeure = valeure/1000
@@ -51,9 +51,9 @@ def calcul_intelligent(stri,appareil):
     elif a[0] == 'err_m':
         valeure = valeure*1000
         n_suffixe = sufixes_numero - 1
-        print([[n_suffixe,valeure,float(appareil)]])
+        
         b = model.predict([[float(appareil),n_suffixe,valeure]])
-        print(b)
+        
     else:
         b = model.predict([[float(appareil),sufixes_numero,valeure]])
 
