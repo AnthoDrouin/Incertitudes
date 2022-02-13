@@ -1,10 +1,9 @@
 
-from distutils import command
 from tkinter import BOTH, ttk, Frame, Button, Label, Entry, Tk, StringVar, mainloop, LEFT, RIGHT
 from I_A import calcul_intelligent, excel2excel
 from matplotlib.pyplot import close, text
 from calculs import calculs2excel, Instruments, calculs2tk
-import tkinterDnD 
+import tkinterDnD
 
 
 class incertitudes_de_masses:
