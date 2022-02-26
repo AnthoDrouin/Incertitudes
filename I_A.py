@@ -63,8 +63,6 @@ def calcul_intelligent(stri,appareil):
     d = calculs2tk([[app_cal, type, c, valeure]])
     return (d[0], c)
 
-
-
 def excel2excel(path, name, unite, appareil):
     données = pd.read_excel(path)
     valeurs = données['value']

@@ -13,10 +13,22 @@ class Incertitude_intelligente:
         self.appareil_text = Label(self.window,font=('arial', 20),text="Entrez l'appareil (4,5 ou 6,5)")
         self.appareil_text.pack(expand=True)
         self.appareil1_button = Button(self.appareil, text='6,5' ,command= lambda : self.type_appareil('6.5'))
-        self.appareil1_button.pack(side=LEFT)
+        self.appareil1_button.grid(row=0,column=0)
         self.appareil2_button = Button(self.appareil, text='4,5',command= lambda : self.type_appareil('4.5'))
-        self.appareil2_button.pack(side=RIGHT)
+        self.appareil2_button.grid(row=0,column=1)
+        self.appareil3_button = Button(self.appareil, text='Source',command= lambda : self.type_appareil('Source'))
+        self.appareil3_button.grid(row=0,column=2)
         self.appareil.pack(expand=True)
+
+        self.curent_type = Frame()
+        self.appareil_text = Label(self.window,font=('arial', 20),text="Entrez le type de courant")
+        self.appareil_text.pack(expand=True)
+        self.appareil1_button = Button(self.appareil, text='DC' ,command= lambda : self.type_courant('DC'))
+        self.appareil1_button.grid(row=0,column=0)
+        self.appareil2_button = Button(self.appareil, text='AC',command= lambda : self.type_courant('AC'))
+        self.appareil2_button.grid(row=0,column=1)
+        self.curent_type.pack(expand=True)
+
         self.Valeur = Frame()
         self.Valeur_text = Label(self.window,font=('arial', 20), text="Entrez votre mesure")
         self.Valeur_text.pack(expand=True)
@@ -42,11 +54,22 @@ class Incertitude_intelligente:
         if num == '6.5':
             self.appareil1_button.config(foreground="red")
             self.appareil2_button.config(foreground="black")
+            self.appareil3_button.config(foreground="black")
         elif num == '4.5':
             self.appareil2_button.config(foreground="red")
             self.appareil1_button.config(foreground="black")
+            self.appareil3_button.config(foreground="black")
+        elif num == 'Source':
+            self.appareil_calcul = '5.0'
+            self.appareil2_button.config(foreground="black")
+            self.appareil1_button.config(foreground="black")
+            self.appareil3_button.config(foreground="red")
+
+    def type_courant(self, value):
+        self.appareil_calcul = float(self.appareil_calcul)+1
 
     def appeler_calculs(self, valeur):
+        print(str(valeur),self.appareil_calcul)
         try:
             a = I_A.calcul_intelligent(str(valeur),self.appareil_calcul)
         except Exception:
