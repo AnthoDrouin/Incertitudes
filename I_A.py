@@ -4,11 +4,17 @@ from sklearn import tree
 
 sufixe = {'mv': 1 , 'v' : 2, 'o' : 3, 'ko' : 4, 'Mo' : 5, 'ua' : 6,  'ma' : 7, 'a' : 8, }
 
-incertitudes_data = pd.read_excel('incertitudes.xlsx')
+incertitudes_data = pd.read_excel('incertitudes.xlsx', sheet_name="DC")
 info_incertitude = incertitudes_data.drop(columns=['range'])
 range_incertitude = incertitudes_data['range']
 model = tree.DecisionTreeClassifier()
 model.fit(info_incertitude.values,range_incertitude.values)
+
+incertitudes_data = pd.read_excel('incertitudes.xlsx', sheet_name="AC")
+info_incertitude = incertitudes_data.drop(columns=['range'])
+range_incertitude = incertitudes_data['range']
+model3 = tree.DecisionTreeClassifier()
+model3.fit(info_incertitude.values,range_incertitude.values)
 
 ajustement_data = pd.read_excel('ajustement.xlsx')
 ajustement_incertitude = ajustement_data.drop(columns=['range'])
@@ -62,6 +68,42 @@ def calcul_intelligent(stri,appareil):
     app_cal = appareil.replace('.',',')
     d = calculs2tk([[app_cal, type, c, valeure]])
     return (d[0], c)
+
+
+
+def calcul_intelligent_AC(stri,appareil,frequence):
+    nb = 0
+    type = ''
+    for i in stri[::-1]:
+        try:
+            int(i)
+            break
+        except Exception:
+            if i == '.':
+                pass
+            else:
+                nb += 1
+    if stri[-1:] == 'a':
+        type = 'Courant'
+    elif stri[-1:] == 'o':
+        type = 'Résistance'
+    elif stri[-1:] == 'v':
+        type = 'Tension'
+
+    if stri[0] == '-':
+        stri = stri[1:]
+
+    sufixes = stri[-nb:]
+    sufixes_numero = sufixe[sufixes]
+    valeure = float(stri[:-nb])
+    a = model3.predict([[float(appareil),sufixes_numero,valeure,frequence]])
+
+    appareil = str(appareil)
+    app_cal = appareil.replace('.',',')
+    d = calculs2tk([[app_cal, type, a, valeure]])
+    return (d[0], a)
+
+
 
 def excel2excel(path, name, unite, appareil):
     données = pd.read_excel(path)
